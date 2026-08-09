@@ -1,0 +1,19 @@
+{
+  "name": "sound-stash",
+  "module": "index.ts",
+  "type": "module",
+  "private": true,
+  "workspaces": [
+    "apps/*"
+  ],
+  "scripts": {
+    "dev:backend": "bun --filter backend dev",
+    "deploy:backend": "bun --filter backend deploy"
+  },
+  "devDependencies": {
+    "@types/bun": "latest"
+  },
+  "peerDependencies": {
+    "typescript": "^5"
+  }
+}
