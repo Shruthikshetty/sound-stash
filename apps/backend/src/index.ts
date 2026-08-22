@@ -1,9 +1,14 @@
-import { Hono } from 'hono'
+import createApp from "./lib/create-app";
+import base from "./routes/index";
 
-const app = new Hono()
+// create app
+const app = createApp();
 
-app.get('/', (c) => {
-  return c.text('Hello Hono!')
-})
+// all routes go here
+const routes = [base];
 
-export default app
+routes.forEach((route) => {
+  app.route("/", route);
+});
+
+export default app;
