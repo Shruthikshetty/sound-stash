@@ -4,11 +4,13 @@
   "type": "module",
   "private": true,
   "workspaces": [
-    "apps/*"
+    "apps/*",
+    "packages/*"
   ],
   "scripts": {
     "dev:backend": "bun --filter backend dev",
-    "deploy:backend": "bun --filter backend deploy"
+    "deploy:backend": "bun --filter backend deploy",
+    "generate-http-status-codes": "bun scripts/generate-http-status-codes.ts"
   },
   "devDependencies": {
     "@types/bun": "latest"

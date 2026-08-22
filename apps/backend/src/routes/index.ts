@@ -3,6 +3,7 @@
  */
 import { createRoute, z } from "@hono/zod-openapi";
 import { createRouter } from "@/lib/create-app";
+import { OK } from "shared/constants";
 
 // create the base route "/"
 const router = createRouter().openapi(
@@ -11,7 +12,7 @@ const router = createRouter().openapi(
     method: "get",
     path: "/",
     responses: {
-      200: {
+      [OK]: {
         content: {
           "application/json": {
             schema: z.object({
@@ -30,7 +31,7 @@ const router = createRouter().openapi(
         message: "welcome to sound stash backend api",
         success: true,
       },
-      200,
+      OK,
     );
   },
 );
