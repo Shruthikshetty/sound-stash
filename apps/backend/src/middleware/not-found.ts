@@ -1,7 +1,7 @@
 // middle ware to handle not found routes
 
 import { NotFoundHandler } from "hono";
-import { UNPROCESSABLE_ENTITY } from "shared/constants";
+import { NOT_FOUND } from "shared/constants";
 
 const handleNotFound: NotFoundHandler = (c) => {
   return c.json(
@@ -9,7 +9,7 @@ const handleNotFound: NotFoundHandler = (c) => {
       success: false,
       message: "route not found",
     },
-    UNPROCESSABLE_ENTITY,
+    NOT_FOUND,
   );
 };
 
