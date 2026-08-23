@@ -1,18 +1,20 @@
-import type { Hook } from "@hono/zod-openapi";
-import * as HttpStatsCodes from "stoker/http-status-codes";
-import { flattenError } from "zod";
+import { INTERNAL_SERVER_ERROR } from "shared/constants";
+import { ErrorHandler } from "hono";
 
 // handles the api zod validation errors this will be used as the default hook for zod open api
-const errorHandler: Hook<any, any, any, any> = (result, c) => {
-  if (!result.success) {
-    return c.json(
-      {
-        success: result.success,
-        error: flattenError(result.error),
-      },
-      HttpStatsCodes.UNPROCESSABLE_ENTITY,
-    );
-  }
+const errorHandler: ErrorHandler = (err, c) => {
+  console.error(`${err}`);
+  return c.json(
+    {
+      message: "Internal server error",
+      success: false,
+      errorInfo:
+        process.env.NODE_ENV === "development"
+          ? `${err instanceof Error ? err.message : String(err)}`
+          : undefined,
+    },
+    INTERNAL_SERVER_ERROR,
+  );
 };
 
 export default errorHandler;
