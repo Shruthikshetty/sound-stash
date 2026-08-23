@@ -1,0 +1,8 @@
+{
+  "name": "shared",
+  "version": "1.0.0",
+  "sideEffects": false,
+  "exports": {
+    "./constants": "./constants/index.ts"
+  }
+}
