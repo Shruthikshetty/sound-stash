@@ -3,7 +3,11 @@ import type { PinoLogger } from "hono-pino";
 
 // binds addition properties
 export interface AppBindings {
-  Bindings: CloudflareBindings;
+  Bindings: CloudflareBindings & {
+    GOOGLE_CLIENT_ID: string;
+    GOOGLE_SECRET: string;
+    AUTH_REDIRECT: string;
+  };
   Variables: {
     logger: PinoLogger;
   };
