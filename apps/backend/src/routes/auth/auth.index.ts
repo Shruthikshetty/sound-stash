@@ -1,17 +1,12 @@
-// This file contains all the handlers related to the auth routes
+import { createRouter } from "@/lib/create-app.js";
 
-import { AppRouteHandler } from "@/types";
-import { AuthenticationUserRoute } from "./auth.route";
-import { OK } from "shared/constants";
+import * as handlers from "./auth.handler.js";
+import * as routes from "./auth.route.js";
 
-export const authenticateUser: AppRouteHandler<
-  AuthenticationUserRoute
-> = async (c) => {
-  return c.json(
-    {
-      message: "auth success",
-      success: true,
-    },
-    OK,
-  );
-};
+// aggregate all handlers and routes
+const router = createRouter().openapi(
+  routes.authenticateUser,
+  handlers.authenticateUser,
+);
+
+export default router;

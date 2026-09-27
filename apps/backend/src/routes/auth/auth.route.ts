@@ -1,3 +1,5 @@
+import { addUserSchema } from "@/db/schema";
+import { authUserResponseSchema } from "@/zod-schemas/auth";
 import { createRoute, z } from "@hono/zod-openapi";
 import { OK } from "shared/constants";
 /*
@@ -7,24 +9,24 @@ export const authenticateUser = createRoute({
   tags: ["auth"],
   path: "/auth",
   method: "post",
+  request: {
+    body: {
+      content: {
+        "application/json": {
+          schema: addUserSchema,
+        },
+      },
+      description: "add new or just auth a existing user",
+    },
+  },
   responses: {
     [OK]: {
       content: {
         "application/json": {
-          schema: z.object({
-            message: z.string(),
-            success: z.boolean(),
-          }),
+          schema: authUserResponseSchema,
         },
       },
       description: "auth success response",
-    },
-  },
-  requestBody: {
-    content: {
-      "application/json": {
-        schema: z.object({}),
-      },
     },
   },
 });

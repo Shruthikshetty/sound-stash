@@ -1,12 +1,26 @@
-import { createRouter } from "@/lib/create-app.js";
+// This file contains all the handlers related to the auth routes
 
-import * as handlers from "./auth.index.js";
-import * as routes from "./auth.route.js";
+import { AppRouteHandler } from "@/types";
+import { AuthenticationUserRoute } from "./auth.route";
+import { OK } from "shared/constants";
 
-// aggregate all handlers and routes
-const router = createRouter().openapi(
-  routes.authenticateUser,
-  handlers.authenticateUser,
-);
+export const authenticateUser: AppRouteHandler<
+  AuthenticationUserRoute
+> = async (c) => {
+  const { googleId } = c.req.valid("json");
+  // verify the token received from client
 
-export default router;
+  // get the response from google
+
+  // check if the user exist inn our app create or login
+
+  // issue our backend jwt token
+
+  return c.json(
+    {
+      message: "auth success",
+      success: true,
+    },
+    OK,
+  );
+};

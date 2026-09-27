@@ -8,7 +8,7 @@
     "cf-typegen": "wrangler types --env-interface CloudflareBindings"
   },
   "dependencies": {
-    "@hono/zod-openapi": "^1.5.2",
+    "@hono/zod-openapi": "^1.6.3",
     "@scalar/hono-api-reference": "^0.11.13",
     "dotenv": "^17.4.2",
     "dotenv-expand": "^1000.0.0",
