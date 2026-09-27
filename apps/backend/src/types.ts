@@ -3,6 +3,7 @@ import type { PinoLogger } from "hono-pino";
 
 // binds addition properties
 export interface AppBindings {
+  Bindings: CloudflareBindings;
   Variables: {
     logger: PinoLogger;
   };

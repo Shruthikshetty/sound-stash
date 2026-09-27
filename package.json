@@ -10,6 +10,7 @@
   "scripts": {
     "dev:backend": "bun --filter backend dev",
     "deploy:backend": "bun --filter backend deploy",
+    "cf-typegen:backend": "bun --filter backend cf-typegen",
     "generate-http-status-codes": "bun scripts/generate-http-status-codes.ts"
   },
   "devDependencies": {
