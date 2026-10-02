@@ -2,25 +2,105 @@
 
 import { AppRouteHandler } from "@/types";
 import { AuthenticationUserRoute } from "./auth.route";
-import { OK } from "shared/constants";
+import {
+  endpoints,
+  INTERNAL_SERVER_ERROR,
+  OK,
+  UNAUTHORIZED,
+} from "shared/constants";
+import axios from "axios";
+import { createDB } from "@/db";
+import { users, UserType } from "@/db/schema";
+import { sign } from "hono/jwt";
+import { genJwtToken } from "@/lib/token";
 
+//https://developers.google.com/identity/openid-connect/openid-connect#obtainuserinfo
+interface GoogleTokenInfo {
+  sub: string; // permanent google user id
+  email: string;
+  name: string;
+  picture?: string;
+  aud: string; // Google Client ID
+}
 export const authenticateUser: AppRouteHandler<
   AuthenticationUserRoute
 > = async (c) => {
-  const { googleId } = c.req.valid("json");
+  const { token } = c.req.valid("json");
   // verify the token received from client
+  try {
+    // 1. Fetch Google user info using Axios
+    const { data: googleUser } = await axios.get<GoogleTokenInfo>(
+      endpoints.GOOGLE_TOKEN_INFO,
+      {
+        params: { id_token: token },
+      },
+    );
 
-  // get the response from google
+    // check id client matches
+    if (c.env.GOOGLE_CLIENT_ID && googleUser.aud !== c.env.GOOGLE_CLIENT_ID) {
+      return c.json(
+        {
+          message: "invalid token",
+          success: false,
+        },
+        UNAUTHORIZED,
+      );
+    }
 
-  // check if the user exist inn our app create or login
+    // check if user exist
+    const db = createDB(c.env.DB);
+    let user;
 
-  // issue our backend jwt token
+    user = await db.query.users.findFirst({
+      where: {
+        email: googleUser.email,
+      },
+    });
 
-  return c.json(
-    {
-      message: "auth success",
-      success: true,
-    },
-    OK,
-  );
+    if (!user) {
+      // create a new user
+      [user] = await db
+        .insert(users)
+        .values({
+          email: googleUser.email,
+          name: googleUser.name,
+          googleId: googleUser.sub,
+          avatar: googleUser.picture,
+        })
+        .returning();
+    }
+
+    // issue our backend jwt token
+    const jwt = await genJwtToken(user, c.env.JWT_SECRET);
+
+    return c.json(
+      {
+        message: "auth success",
+        success: true,
+        data: {
+          token: jwt,
+          user: user,
+        },
+      },
+      OK,
+    );
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      return c.json(
+        {
+          message: "invalid token or expired google token",
+          success: false,
+        },
+        UNAUTHORIZED,
+      );
+    }
+    // unknown error or uncaught error
+    return c.json(
+      {
+        message: "something went wrong please try again",
+        success: false,
+      },
+      INTERNAL_SERVER_ERROR,
+    );
+  }
 };

@@ -1,5 +1,6 @@
 import { text, integer, sqliteTable } from "drizzle-orm/sqlite-core";
 import { createInsertSchema, createSelectSchema } from "drizzle-zod";
+import { z } from "zod";
 
 // create the user table
 export const users = sqliteTable("users", {
@@ -39,3 +40,5 @@ export const addUserSchema = createInsertSchema(users, {
 
 // user schema for select
 export const selectUserSchema = createSelectSchema(users);
+// export type
+export type UserType = z.infer<typeof selectUserSchema>;

@@ -7,6 +7,7 @@ export interface AppBindings {
     GOOGLE_CLIENT_ID: string;
     GOOGLE_SECRET: string;
     AUTH_REDIRECT: string;
+    JWT_SECRET: string;
   };
   Variables: {
     logger: PinoLogger;

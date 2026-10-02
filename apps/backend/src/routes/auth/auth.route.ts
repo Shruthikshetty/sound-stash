@@ -1,7 +1,18 @@
+import {
+  badRequestDocObject,
+  internalServerErrorDocObject,
+  zodValidationErrorDocObject,
+} from "@/constants/doc.constants";
 import { addUserSchema } from "@/db/schema";
 import { authUserResponseSchema } from "@/zod-schemas/auth";
+import { AppNotFoundErrorSchema } from "@/zod-schemas/validation";
 import { createRoute, z } from "@hono/zod-openapi";
-import { OK } from "shared/constants";
+import {
+  BAD_REQUEST,
+  INTERNAL_SERVER_ERROR,
+  NOT_FOUND,
+  OK,
+} from "shared/constants";
 /*
  * this is used for both login and sign up app only supports oauth
  */
@@ -13,7 +24,9 @@ export const authenticateUser = createRoute({
     body: {
       content: {
         "application/json": {
-          schema: addUserSchema,
+          schema: z.object({
+            token: z.string(),
+          }),
         },
       },
       description: "add new or just auth a existing user",
@@ -28,6 +41,9 @@ export const authenticateUser = createRoute({
       },
       description: "auth success response",
     },
+    [BAD_REQUEST]: zodValidationErrorDocObject,
+    [INTERNAL_SERVER_ERROR]: internalServerErrorDocObject,
+    [NOT_FOUND]: AppNotFoundErrorSchema,
   },
 });
 
