@@ -5,6 +5,7 @@ import type { AppBindings } from "@/types";
 import { appLogger } from "@/middleware/app-logger";
 import errorHandler from "@/middleware/error-handler";
 import handleNotFound from "@/middleware/not-found";
+import validateEnv from "@/middleware/validate-env";
 import validationErrorHandler from "@/middleware/validate-error";
 
 export function createRouter() {
@@ -20,6 +21,7 @@ export function createApp() {
   const app = createRouter();
 
   // all added middlewares go here
+  app.use(validateEnv);
   app.use(appLogger);
   app.notFound(handleNotFound);
   app.onError(errorHandler);

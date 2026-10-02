@@ -49,7 +49,7 @@ export const authenticateUser: AppRouteHandler<
     );
 
     // check id client matches
-    if (c.env.GOOGLE_CLIENT_ID && googleUser.aud !== c.env.GOOGLE_CLIENT_ID) {
+    if (googleUser.aud !== c.env?.GOOGLE_CLIENT_ID) {
       return c.json(
         {
           message: "invalid token",
