@@ -34,3 +34,11 @@ export const AppBadRequestErrorSchema = z.object({
   message: z.string(),
   success: z.boolean(),
 });
+
+/**
+ * unauthorized schema
+ */
+export const AppUnauthorizedErrorSchema = z.object({
+  message: z.string(),
+  success: z.boolean(),
+});

@@ -1,17 +1,22 @@
 import {
   badRequestDocObject,
   internalServerErrorDocObject,
+  zodNotFoundDocObject,
   zodValidationErrorDocObject,
 } from "@/constants/doc.constants";
 import { addUserSchema } from "@/db/schema";
 import { authUserResponseSchema } from "@/zod-schemas/auth";
-import { AppNotFoundErrorSchema } from "@/zod-schemas/validation";
+import {
+  AppNotFoundErrorSchema,
+  AppUnauthorizedErrorSchema,
+} from "@/zod-schemas/validation";
 import { createRoute, z } from "@hono/zod-openapi";
 import {
   BAD_REQUEST,
   INTERNAL_SERVER_ERROR,
   NOT_FOUND,
   OK,
+  UNAUTHORIZED,
 } from "shared/constants";
 /*
  * this is used for both login and sign up app only supports oauth
@@ -43,7 +48,8 @@ export const authenticateUser = createRoute({
     },
     [BAD_REQUEST]: zodValidationErrorDocObject,
     [INTERNAL_SERVER_ERROR]: internalServerErrorDocObject,
-    [NOT_FOUND]: AppNotFoundErrorSchema,
+    [NOT_FOUND]: zodNotFoundDocObject,
+    [UNAUTHORIZED]: AppUnauthorizedErrorSchema,
   },
 });
 

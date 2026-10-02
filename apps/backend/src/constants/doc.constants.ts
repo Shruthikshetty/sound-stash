@@ -2,6 +2,7 @@ import {
   AppBadRequestErrorSchema,
   AppInternalServerErrorSchema,
   AppNotFoundErrorSchema,
+  AppUnauthorizedErrorSchema,
   AppValidationErrorSchema,
 } from "@/zod-schemas/validation";
 
@@ -48,4 +49,14 @@ export const badRequestDocObject = {
     },
   },
   description: "Bad request error response",
+};
+
+// unauthorize error doc object
+export const unauthorizeErrorDocObject = {
+  content: {
+    "application/json": {
+      schema: AppUnauthorizedErrorSchema,
+    },
+  },
+  description: "User is not authorized for this action",
 };
