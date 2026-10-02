@@ -2,6 +2,7 @@
 
 import axios from "axios";
 import {
+  BAD_REQUEST,
   endpoints,
   INTERNAL_SERVER_ERROR,
   OK,
@@ -69,6 +70,13 @@ export const authenticateUser: AppRouteHandler<
           googleId: googleUser.sub,
           avatar: googleUser.picture,
         })
+        // edge case in case 2 simultaneous request go through
+        .onConflictDoUpdate({
+          target: users.email,
+          set: {
+            updatedAt: new Date(),
+          },
+        })
         .returning();
     }
 
@@ -93,13 +101,26 @@ export const authenticateUser: AppRouteHandler<
     );
   } catch (error) {
     if (axios.isAxiosError(error)) {
-      return c.json(
-        {
-          message: "invalid token or expired google token",
-          success: false,
-        },
-        UNAUTHORIZED,
-      );
+      if (
+        error.response?.status === BAD_REQUEST ||
+        error.response?.status === UNAUTHORIZED
+      ) {
+        return c.json(
+          {
+            message: "invalid token or expired google token",
+            success: false,
+          },
+          UNAUTHORIZED,
+        );
+      } else {
+        return c.json(
+          {
+            message: "something went wrong wile authenticating with google",
+            success: false,
+          },
+          INTERNAL_SERVER_ERROR,
+        );
+      }
     }
     // unknown error or uncaught error
     return c.json(
