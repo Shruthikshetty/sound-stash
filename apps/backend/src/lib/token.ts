@@ -1,9 +1,11 @@
 //https://hono.dev/docs/middleware/builtin/jwt
 //https://hono.dev/docs/helpers/jwt#sign
 
-import { JWT_ALGORITHM, JWT_EXPIRY } from "@/constants/config.constants";
-import { UserType } from "@/db/schema";
 import { sign, verify } from "hono/jwt";
+
+import type { UserType } from "@/db/schema";
+
+import { JWT_ALGORITHM, JWT_EXPIRY } from "@/constants/config.constants";
 
 export async function genJwtToken(
   user: Pick<UserType, "id" | "email" | "role">,

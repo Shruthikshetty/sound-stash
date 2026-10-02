@@ -1,18 +1,20 @@
 // This file contains all the handlers related to the auth routes
 
-import { AppRouteHandler } from "@/types";
-import { AuthenticationUserRoute } from "./auth.route";
+import axios from "axios";
 import {
   endpoints,
   INTERNAL_SERVER_ERROR,
   OK,
   UNAUTHORIZED,
 } from "shared/constants";
-import axios from "axios";
+
+import type { AppRouteHandler } from "@/types";
+
 import { createDB } from "@/db";
-import { users, UserType } from "@/db/schema";
-import { sign } from "hono/jwt";
+import { users } from "@/db/schema";
 import { genJwtToken } from "@/lib/token";
+
+import type { AuthenticationUserRoute } from "./auth.route";
 
 //https://developers.google.com/identity/openid-connect/openid-connect#obtainuserinfo
 interface GoogleTokenInfo {

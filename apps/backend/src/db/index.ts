@@ -1,5 +1,6 @@
 import { defineRelations } from "drizzle-orm";
 import { drizzle } from "drizzle-orm/d1";
+
 import * as schema from "./schema/index";
 
 const relations = defineRelations(schema);

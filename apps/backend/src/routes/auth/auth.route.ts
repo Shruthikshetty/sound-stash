@@ -1,15 +1,3 @@
-import {
-  badRequestDocObject,
-  internalServerErrorDocObject,
-  zodNotFoundDocObject,
-  zodValidationErrorDocObject,
-} from "@/constants/doc.constants";
-import { addUserSchema } from "@/db/schema";
-import { authUserResponseSchema } from "@/zod-schemas/auth";
-import {
-  AppNotFoundErrorSchema,
-  AppUnauthorizedErrorSchema,
-} from "@/zod-schemas/validation";
 import { createRoute, z } from "@hono/zod-openapi";
 import {
   BAD_REQUEST,
@@ -18,6 +6,14 @@ import {
   OK,
   UNAUTHORIZED,
 } from "shared/constants";
+
+import {
+  internalServerErrorDocObject,
+  zodNotFoundDocObject,
+  zodValidationErrorDocObject,
+} from "@/constants/doc.constants";
+import { authUserResponseSchema } from "@/zod-schemas/auth";
+import { AppUnauthorizedErrorSchema } from "@/zod-schemas/validation";
 /*
  * this is used for both login and sign up app only supports oauth
  */

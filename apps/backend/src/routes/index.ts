@@ -2,8 +2,9 @@
  * this is the base route of the app
  */
 import { createRoute, z } from "@hono/zod-openapi";
-import { createRouter } from "@/lib/create-app";
 import { OK } from "shared/constants";
+
+import { createRouter } from "@/lib/create-app";
 
 // create the base route "/"
 const router = createRouter().openapi(
