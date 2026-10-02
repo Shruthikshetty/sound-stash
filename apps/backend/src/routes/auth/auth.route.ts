@@ -9,11 +9,11 @@ import {
 
 import {
   internalServerErrorDocObject,
+  unauthorizeErrorDocObject,
   zodNotFoundDocObject,
   zodValidationErrorDocObject,
 } from "@/constants/doc.constants";
 import { authUserResponseSchema } from "@/zod-schemas/auth";
-import { AppUnauthorizedErrorSchema } from "@/zod-schemas/validation";
 /*
  * this is used for both login and sign up app only supports oauth
  */
@@ -45,7 +45,7 @@ export const authenticateUser = createRoute({
     [BAD_REQUEST]: zodValidationErrorDocObject,
     [INTERNAL_SERVER_ERROR]: internalServerErrorDocObject,
     [NOT_FOUND]: zodNotFoundDocObject,
-    [UNAUTHORIZED]: AppUnauthorizedErrorSchema,
+    [UNAUTHORIZED]: unauthorizeErrorDocObject,
   },
 });
 

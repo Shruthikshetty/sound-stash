@@ -7,8 +7,8 @@ export const authUserResponseSchema = apiResponseSchema.extend({
   data: z.object({
     token: z.string(),
     user: z.object({
-      id: z.string(),
-      name: z.string(),
+      id: z.number(),
+      name: z.string().nullish(),
       email: z.string(),
       role: z.string(),
     }),
