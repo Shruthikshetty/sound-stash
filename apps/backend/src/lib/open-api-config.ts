@@ -1,6 +1,8 @@
-import { AppOpenApi } from "@/types";
-import packageJson from "../../package.json" with { type: "json" };
 import { Scalar } from "@scalar/hono-api-reference";
+
+import type { AppOpenApi } from "@/types";
+
+import packageJson from "../../package.json" with { type: "json" };
 
 const configureOpenApi = (app: AppOpenApi) => {
   // this creates open api doc in json format

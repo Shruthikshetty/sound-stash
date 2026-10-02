@@ -7,6 +7,7 @@ This document details the initial setup of the `sound-stash` monorepo using Bun 
 ## Workspace Structure
 
 The workspace is organized as a monorepo under `apps/`:
+
 - `apps/backend/` - Hono API running on Cloudflare Workers.
 - `apps/web/` - React Admin Web UI (to be created).
 - `apps/mobile/` - React Native Mobile Player (to be created).
@@ -16,7 +17,9 @@ The workspace is organized as a monorepo under `apps/`:
 ## Configuration Details
 
 ### 1. Monorepo Root Configuration
+
 The root [package.json](../package.json) maps all projects inside the `apps/` directory using workspaces:
+
 ```json
 "workspaces": [
   "apps/*"
@@ -24,9 +27,16 @@ The root [package.json](../package.json) maps all projects inside the `apps/` di
 ```
 
 ### 2. Cloudflare Workers Hono Backend
+
 - The Hono project was initialized inside `apps/backend/` using the `cloudflare-workers` template.
 - The `compatibility_date` in [apps/backend/wrangler.jsonc](../apps/backend/wrangler.jsonc) is set to `"2026-08-08"` to match local Wrangler CLI environment limits.
 - Dependencies are managed and hoisted to the root level.
+
+---
+
+## Database Documentation
+
+For detailed instructions on Cloudflare D1 bindings, Drizzle ORM v1 configuration, schemas, client factory usage, and migrations, refer to the [Database Setup Guide](./database-setup.md).
 
 ---
 
@@ -39,6 +49,8 @@ bun dev:backend
 ```
 
 Once started, the server runs at:
+
 - **API Server**: http://127.0.0.1:8787/
 
 You can verify it is running by visiting the root URL, which should respond with `Hello Hono!`.
+

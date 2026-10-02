@@ -20,7 +20,7 @@ export default antfu(
       "perfectionist/sort-imports": [
         "error",
         {
-          tsconfigRootDir: ".",
+          internalPattern: ["^@/.*"],
         },
       ],
       "unicorn/filename-case": [

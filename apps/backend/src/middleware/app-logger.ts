@@ -1,13 +1,11 @@
 import { pinoLogger } from "hono-pino";
 
-const isDev = process.env.NODE_ENV === "development";
-
 // config for pino logger
 export const appLogger = pinoLogger({
-  pino: {
-    enabled: isDev, // enable only in development
+  pino: (c) => ({
+    enabled: c.env?.ENVIRONMENT === "development", // enable only in development
     level: "debug",
-    ...(isDev
+    ...(c.env?.ENVIRONMENT === "development"
       ? {
           transport: {
             target: "pino-pretty",
@@ -20,7 +18,7 @@ export const appLogger = pinoLogger({
           },
         }
       : {}),
-  },
+  }),
   http: {
     reqId: () => crypto.randomUUID(),
     onReqBindings: (c) => ({

@@ -2,12 +2,11 @@
   "$schema": "node_modules/wrangler/config-schema.json",
   "name": "backend",
   "main": "src/index.ts",
-  "compatibility_date": "2026-08-08"
+  "compatibility_date": "2026-08-08",
   // "compatibility_flags": [
   //   "nodejs_compat"
   // ],
   // "vars": {
-  //   "MY_VAR": "my-variable"
   // },
   // "kv_namespaces": [
   //   {
@@ -21,13 +20,14 @@
   //     "bucket_name": "my-bucket"
   //   }
   // ],
-  // "d1_databases": [
-  //   {
-  //     "binding": "MY_DB",
-  //     "database_name": "my-database",
-  //     "database_id": ""
-  //   }
-  // ],
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "sound-stash-db",
+      "database_id": "local-dev-db-id",
+      "migrations_dir": "src/db/migrations",
+    },
+  ],
   // "ai": {
   //   "binding": "AI"
   // },

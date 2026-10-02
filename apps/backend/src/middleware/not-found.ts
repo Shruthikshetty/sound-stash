@@ -1,6 +1,7 @@
 // middle ware to handle not found routes
 
-import { NotFoundHandler } from "hono";
+import type { NotFoundHandler } from "hono";
+
 import { NOT_FOUND } from "shared/constants";
 
 const handleNotFound: NotFoundHandler = (c) => {

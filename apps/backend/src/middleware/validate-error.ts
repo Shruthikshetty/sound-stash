@@ -1,5 +1,5 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import type { Hook } from "@hono/zod-openapi";
+
 import { BAD_REQUEST } from "shared/constants";
 import { flattenError } from "zod";
 
