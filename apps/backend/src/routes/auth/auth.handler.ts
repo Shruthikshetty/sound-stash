@@ -76,7 +76,7 @@ export const authenticateUser: AppRouteHandler<
 
     user = await db.query.users.findFirst({
       where: {
-        email: googleUser.email,
+        googleId: googleUser.sub,
       },
     });
 
