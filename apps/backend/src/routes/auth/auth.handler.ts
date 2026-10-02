@@ -4,6 +4,7 @@ import axios from "axios";
 import {
   BAD_REQUEST,
   endpoints,
+  GENERAL_REQUEST_TIMEOUT,
   INTERNAL_SERVER_ERROR,
   OK,
   UNAUTHORIZED,
@@ -24,18 +25,26 @@ interface GoogleTokenInfo {
   name: string;
   picture?: string;
   aud: string; // Google Client ID
+  email_verified?: boolean;
 }
+
+/**
+ * handler to handle user authentication / login
+ * authenticates using oauth and returns JWT token
+ */
 export const authenticateUser: AppRouteHandler<
   AuthenticationUserRoute
 > = async (c) => {
   const { token } = c.req.valid("json");
   // verify the token received from client
   try {
-    // 1. Fetch Google user info using Axios
+    //@TODO move as separate util
+    // Fetch Google user info using Axios
     const { data: googleUser } = await axios.get<GoogleTokenInfo>(
       endpoints.GOOGLE_TOKEN_INFO,
       {
         params: { id_token: token },
+        timeout: GENERAL_REQUEST_TIMEOUT,
       },
     );
 
@@ -44,6 +53,17 @@ export const authenticateUser: AppRouteHandler<
       return c.json(
         {
           message: "invalid token",
+          success: false,
+        },
+        UNAUTHORIZED,
+      );
+    }
+
+    // only allow verified google emails
+    if (googleUser?.email_verified !== true) {
+      return c.json(
+        {
+          message: "google email is not verified",
           success: false,
         },
         UNAUTHORIZED,

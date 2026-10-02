@@ -1,0 +1,1 @@
+export const GENERAL_REQUEST_TIMEOUT = 5000;
