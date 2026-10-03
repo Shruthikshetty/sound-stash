@@ -55,18 +55,18 @@ You can launch apps individually or start the full stack together with a single 
 ### 1. Run Full Stack (Frontend + Backend Concurrently)
 
 ```bash
-bun dev
+bun dev:webapp
 ```
 
-*Runs both the backend API and the web frontend concurrently using Bun's workspace filter.*
+_Runs both the backend API and the web frontend concurrently using Bun's workspace filter._
 
 ### 2. Run Individual Applications
 
-| Application | Command | Local URL |
-| :--- | :--- | :--- |
-| **Full Stack** (Both) | `bun dev` | `http://localhost:3000` & `http://localhost:8787` |
-| **Web Frontend Only** | `bun dev:web` | [http://localhost:3000](http://localhost:3000) |
-| **Backend API Only** | `bun dev:backend` | [http://localhost:8787](http://localhost:8787) |
+| Application              | Command                   | Local URL                                                          |
+| :----------------------- | :------------------------ | :----------------------------------------------------------------- |
+| **Full Stack** (Both)    | `bun dev`                 | `http://localhost:3000` & `http://localhost:8787`                  |
+| **Web Frontend Only**    | `bun dev:web`             | [http://localhost:3000](http://localhost:3000)                     |
+| **Backend API Only**     | `bun dev:backend`         | [http://localhost:8787](http://localhost:8787)                     |
 | **API Interactive Docs** | (When backend is running) | [http://localhost:8787/reference](http://localhost:8787/reference) |
 
 ---
@@ -74,5 +74,3 @@ bun dev
 ## Database Documentation
 
 For detailed instructions on Cloudflare D1 bindings, Drizzle ORM v1 configuration, schemas, and running local/production migrations, refer to the [Database Setup Guide](./database-setup.md).
-
-
