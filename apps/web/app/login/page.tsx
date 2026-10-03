@@ -1,30 +1,25 @@
 "use client";
 
+import { appClient } from "@/lib/api-client";
 import { GoogleLogin } from "@react-oauth/google";
-import axios from "axios";
 
 function LoginScreen() {
   return (
     <div>
       <GoogleLogin
-        onSuccess={(credentialResponse) => {
-          console.log(credentialResponse);
-          //backend api call just temp for testing
-          axios
-            .post(
-              "http://localhost:8787/auth",
-              {
-                token: credentialResponse.credential,
+        onSuccess={async (credentialResponse) => {
+          await appClient.auth
+            .$post({
+              json: {
+                token: credentialResponse?.credential ?? "",
               },
-              {
-                withCredentials: true, //accept cookies
-              },
-            )
-            .then((response) => {
-              console.log("success", JSON.stringify(response));
+            })
+            .then(async (response) => {
+              const data = await response.json();
+              console.log("success", data);
             })
             .catch((error) => {
-              console.log("error", JSON.stringify(error, null, 2));
+              console.log("error", error);
             });
         }}
         onError={() => {
