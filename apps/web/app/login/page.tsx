@@ -11,9 +11,15 @@ function LoginScreen() {
           console.log(credentialResponse);
           //backend api call just temp for testing
           axios
-            .post("http://localhost:8787/auth", {
-              token: credentialResponse.credential,
-            })
+            .post(
+              "http://localhost:8787/auth",
+              {
+                token: credentialResponse.credential,
+              },
+              {
+                withCredentials: true, //accept cookies
+              },
+            )
             .then((response) => {
               console.log("success", JSON.stringify(response));
             })

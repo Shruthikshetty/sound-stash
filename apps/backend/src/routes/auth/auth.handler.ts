@@ -14,7 +14,7 @@ import type { AppRouteHandler } from "@/types";
 
 import { createDB } from "@/db";
 import { users } from "@/db/schema";
-import { genJwtToken } from "@/lib/token";
+import { genJwtToken, setAuthCookies } from "@/lib/token";
 
 import type { AuthenticationUserRoute } from "./auth.route";
 
@@ -110,6 +110,9 @@ export const authenticateUser: AppRouteHandler<
     // issue our backend jwt token
     const jwt = await genJwtToken(user, c.env.JWT_SECRET);
 
+    //set cookies
+    setAuthCookies(c, jwt);
+    //return response
     return c.json(
       {
         message: "auth success",
