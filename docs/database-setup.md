@@ -27,11 +27,14 @@ Configured in [apps/backend/wrangler.jsonc](../apps/backend/wrangler.jsonc):
   {
     "binding": "DB",
     "database_name": "sound-stash-db",
-    "database_id": "local-dev-db-id"
+    "database_id": "local-dev-db-id",
+    "migrations_dir": "src/db/migrations",
+    "migrations_pattern": "src/db/migrations/*/migration.sql"
   }
 ]
 ```
 * In local development (`wrangler dev`), Wrangler emulates D1 automatically using SQLite in `.wrangler/state/`.
+* **Important:** Drizzle Kit generates migration SQL inside subfolders (`src/db/migrations/<timestamp>_<name>/migration.sql`). You **must** specify `"migrations_pattern": "src/db/migrations/*/migration.sql"` so Wrangler can locate and apply them.
 
 ---
 
@@ -76,18 +79,43 @@ export type AppDB = ReturnType<typeof createDB>;
 
 ---
 
-## 5. Essential Commands
+## 5. When to Run Migrations in Development
 
-| Task | Command |
-| :--- | :--- |
-| **Generate TypeScript types** for bindings (`c.env.DB`) | `bun cf-typegen:backend` |
-| **Generate SQL migrations** from schemas | `bun --filter backend drizzle-kit generate` |
-| **Apply migrations to local D1** | `bun --filter backend wrangler d1 migrations apply sound-stash-db --local` |
-| **Apply migrations to production D1** | `bun --filter backend wrangler d1 migrations apply sound-stash-db --remote` |
+> [!WARNING]
+> **Cloudflare D1 does not auto-create tables!**
+> The local Miniflare D1 database starts completely empty. If you add or change schemas in `src/db/schema/` without generating and applying migrations, queries like `db.query.users.findFirst()` or `db.insert(users)` will fail at runtime with `no such table: <table_name>`, resulting in `500 Internal Server Error`.
+
+### Whenever you:
+1. **Set up the project locally for the first time**
+2. **Add a new database schema file** in `src/db/schema/`
+3. **Modify existing table definitions** (columns, constraints, indexes)
+
+### Run the two-step migration workflow:
+
+```bash
+# Step 1: Generate SQL migration file from schema differences
+bun run db:generate
+
+# Step 2: Apply the migration to your local D1 emulator
+bun run db:migrate:local
+```
+
+*(Note: You can run these commands from the root directory or inside `apps/backend/`)*
 
 ---
 
-## 6. Production Deployment Steps
+## 6. Essential Commands
+
+| Task | Root Command | Backend Directory Command |
+| :--- | :--- | :--- |
+| **Generate TypeScript types** (`c.env.DB`) | `bun run cf-typegen:backend` | `bun run cf-typegen` |
+| **Generate SQL migrations** | `bun run db:generate` | `bun run db:generate` |
+| **Apply migrations to local D1** | `bun run db:migrate:local` | `bun run db:migrate:local` |
+| **Apply migrations to production D1** | `bun run db:migrate:prod` | `bun run db:migrate:prod` |
+
+---
+
+## 7. Production Deployment Steps
 
 Follow these steps when you are ready to deploy your database and backend to Cloudflare:
 
@@ -127,7 +155,8 @@ Open [apps/backend/wrangler.jsonc](../apps/backend/wrangler.jsonc) and replace t
 ### Step 4: Apply Migrations to Remote D1
 Run your schema migrations against the live Cloudflare database:
 ```bash
-bun --filter backend wrangler d1 migrations apply sound-stash-db --remote
+bun run db:migrate:prod
+# or: bun --filter backend wrangler d1 migrations apply DB --remote
 ```
 
 ### Step 5: Upload Production Secrets

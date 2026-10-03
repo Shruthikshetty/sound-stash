@@ -11,6 +11,9 @@
     "dev:backend": "bun --filter backend dev",
     "deploy:backend": "bun --filter backend deploy",
     "cf-typegen:backend": "bun --filter backend cf-typegen",
+    "db:generate": "bun --filter backend db:generate",
+    "db:migrate:local": "bun --filter backend db:migrate:local",
+    "db:migrate:prod": "bun --filter backend db:migrate:prod",
     "generate-http-status-codes": "bun scripts/generate-http-status-codes.ts"
   },
   "devDependencies": {

@@ -1,5 +1,6 @@
 import createApp from "./lib/create-app";
 import configureOpenApi from "./lib/open-api-config";
+import auth from "./routes/auth/auth.index";
 import base from "./routes/index";
 
 // create app
@@ -9,7 +10,7 @@ const app = createApp();
 configureOpenApi(app);
 
 // all routes go here
-const routes = [base];
+const routes = [base, auth];
 
 routes.forEach((route) => {
   app.route("/", route);

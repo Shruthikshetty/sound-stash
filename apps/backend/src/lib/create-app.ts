@@ -2,6 +2,7 @@ import { OpenAPIHono } from "@hono/zod-openapi";
 
 import type { AppBindings } from "@/types";
 
+import appCors from "@/middleware/app-cors";
 import { appLogger } from "@/middleware/app-logger";
 import errorHandler from "@/middleware/error-handler";
 import handleNotFound from "@/middleware/not-found";
@@ -21,6 +22,7 @@ export function createApp() {
   const app = createRouter();
 
   // all added middlewares go here
+  app.use(appCors);
   app.use(validateEnv);
   app.use(appLogger);
   app.notFound(handleNotFound);

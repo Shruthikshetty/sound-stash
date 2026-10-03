@@ -25,7 +25,7 @@ interface GoogleTokenInfo {
   name: string;
   picture?: string;
   aud: string; // Google Client ID
-  email_verified?: boolean;
+  email_verified?: boolean | string;
 }
 
 /**
@@ -39,12 +39,16 @@ export const authenticateUser: AppRouteHandler<
   // verify the token received from client
   try {
     //@TODO move as separate util
+    //@TODO Switch to standard OIDC JWT verification
     // Fetch Google user info using Axios
     const { data: googleUser } = await axios.get<GoogleTokenInfo>(
       endpoints.GOOGLE_TOKEN_INFO,
       {
         params: { id_token: token },
         timeout: GENERAL_REQUEST_TIMEOUT,
+        fetchOptions: {
+          cache: "no-store", // Prevents Cloudflare's "Unsupported cache mode: default" error
+        },
       },
     );
 
@@ -60,7 +64,10 @@ export const authenticateUser: AppRouteHandler<
     }
 
     // only allow verified google emails
-    if (googleUser?.email_verified !== true) {
+    if (
+      googleUser?.email_verified !== true &&
+      googleUser?.email_verified !== "true"
+    ) {
       return c.json(
         {
           message: "google email is not verified",
