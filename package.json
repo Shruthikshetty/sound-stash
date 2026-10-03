@@ -8,7 +8,9 @@
     "packages/*"
   ],
   "scripts": {
+    "dev:webapp": "bun --filter backend --filter web dev",
     "dev:backend": "bun --filter backend dev",
+    "dev:web": "bun --filter web dev",
     "deploy:backend": "bun --filter backend deploy",
     "cf-typegen:backend": "bun --filter backend cf-typegen",
     "db:generate": "bun --filter backend db:generate",

@@ -1,36 +1,59 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Sound Stash Web
 
-## Getting Started
+The frontend web application for **Sound Stash**, built with [Next.js](https://nextjs.org/) (App Router), [React 19](https://react.dev/), and [Tailwind CSS v4](https://tailwindcss.com/).
 
-First, run the development server:
+---
+
+## 🚀 Tech Stack
+
+- **Framework**: Next.js 16 (App Router)
+- **UI Library**: React 19, Shadcn UI / Base UI, Lucide Icons
+- **Styling**: Tailwind CSS v4
+- **Auth**: Google OAuth via `@react-oauth/google`
+- **HTTP Client**: Axios
+
+---
+
+## ⚙️ Environment Variables
+
+Create an `.env` file inside `apps/web/`:
+
+```env
+NEXT_PUBLIC_GOOGLE_CLIENT_ID="your-google-client-id.apps.googleusercontent.com"
+```
+
+---
+
+## 🛠️ Getting Started
+
+### 1. Install Dependencies
+From the monorepo root:
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
+bun install
+```
+
+### 2. Run the Development Server
+
+From the root directory:
+```bash
+bun dev:web
+```
+
+Or from `apps/web`:
+```bash
 bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000) in your browser.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+---
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## 🔗 Backend Connection
 
-## Learn More
+This frontend connects to the **Sound Stash Backend API** running on `http://localhost:8787` (`apps/backend`).
 
-To learn more about Next.js, take a look at the following resources:
+To run both services together:
+- **Frontend**: `bun dev:web` (runs on `http://localhost:3000`)
+- **Backend**: `bun dev:backend` (runs on `http://localhost:8787`)
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
