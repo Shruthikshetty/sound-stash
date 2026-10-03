@@ -1,6 +1,13 @@
-import { redirect } from "next/navigation";
+"use client";
 
+/**
+ * Home screen of the app
+ */
 export default function Home() {
-  // route to next screen @TODO this is temp set up starting with login screen
-  redirect("/login");
+  return (
+    <main>
+      <h1>Sound Stash</h1>
+      <p>In construction...</p>
+    </main>
+  );
 }
