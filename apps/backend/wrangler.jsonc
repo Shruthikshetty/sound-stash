@@ -26,6 +26,7 @@
       "database_name": "sound-stash-db",
       "database_id": "local-dev-db-id",
       "migrations_dir": "src/db/migrations",
+      "migrations_pattern": "src/db/migrations/*/migration.sql",
     },
   ],
   // "ai": {

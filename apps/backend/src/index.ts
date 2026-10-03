@@ -1,5 +1,6 @@
 import createApp from "./lib/create-app";
 import configureOpenApi from "./lib/open-api-config";
+import auth from "./routes/auth/auth.index";
 import base from "./routes/index";
 
 // create app
@@ -8,11 +9,9 @@ const app = createApp();
 //configure open api
 configureOpenApi(app);
 
-// all routes go here
-const routes = [base];
+//Chain routes so TypeScript preserves the exact schema types
+const _routes = app.route("/", base).route("/", auth);
 
-routes.forEach((route) => {
-  app.route("/", route);
-});
+export type AppType = typeof _routes;
 
 export default app;

@@ -1,16 +1,17 @@
 # Sound Stash: Monorepo Setup
 
-This document details the initial setup of the `sound-stash` monorepo using Bun Workspaces and a Cloudflare Workers Hono backend.
+This document details the setup of the `sound-stash` monorepo using Bun Workspaces, a Cloudflare Workers Hono backend, and a Next.js web application.
 
 ---
 
 ## Workspace Structure
 
-The workspace is organized as a monorepo under `apps/`:
+The workspace is organized as a monorepo under `apps/` and `packages/`:
 
-- `apps/backend/` - Hono API running on Cloudflare Workers.
-- `apps/web/` - React Admin Web UI (to be created).
-- `apps/mobile/` - React Native Mobile Player (to be created).
+- `apps/backend/` - Hono REST/OpenAPI service running on Cloudflare Workers (Port `8787`).
+- `apps/web/` - Next.js 16 (App Router) web application with React 19 & Tailwind CSS v4 (Port `3000`).
+- `apps/mobile/` - React Native mobile player (planned).
+- `packages/shared/` - Shared constants, endpoints, and utility functions across apps.
 
 ---
 
@@ -18,39 +19,58 @@ The workspace is organized as a monorepo under `apps/`:
 
 ### 1. Monorepo Root Configuration
 
-The root [package.json](../package.json) maps all projects inside the `apps/` directory using workspaces:
+The root [package.json](../package.json) manages all applications and packages using workspaces:
 
 ```json
 "workspaces": [
-  "apps/*"
+  "apps/*",
+  "packages/*"
 ]
 ```
 
-### 2. Cloudflare Workers Hono Backend
+### 2. Cloudflare Workers Hono Backend (`apps/backend`)
 
-- The Hono project was initialized inside `apps/backend/` using the `cloudflare-workers` template.
-- The `compatibility_date` in [apps/backend/wrangler.jsonc](../apps/backend/wrangler.jsonc) is set to `"2026-08-08"` to match local Wrangler CLI environment limits.
-- Dependencies are managed and hoisted to the root level.
+- Initialized inside `apps/backend/` using the Hono Cloudflare Workers template.
+- Integrated with `@hono/zod-openapi` for typed routes and automatic Swagger/Scalar documentation.
+- Database powered by Cloudflare D1 with Drizzle ORM v1 (see [Database Setup Guide](./database-setup.md)).
+- Runs locally via Wrangler on `http://localhost:8787`.
+
+### 3. Next.js Web Frontend (`apps/web`)
+
+- Built with **Next.js 16** (App Router), **React 19**, and **Tailwind CSS v4**.
+- UI components built with **Base UI / Shadcn** and **Lucide Icons**.
+- Authentication integrated with Google Identity Services via `@react-oauth/google`.
+- Communicates with the backend on `http://localhost:8787` using Axios with `withCredentials: true` to support HTTP-only session cookies.
+- Environment variables (`apps/web/.env`):
+  ```env
+  NEXT_PUBLIC_GOOGLE_CLIENT_ID="your-google-client-id.apps.googleusercontent.com"
+  ```
+
+---
+
+## Running the Applications Locally
+
+You can launch apps individually or start the full stack together with a single command from the monorepo root:
+
+### 1. Run Full Stack (Frontend + Backend Concurrently)
+
+```bash
+bun dev:webapp
+```
+
+_Runs both the backend API and the web frontend concurrently using Bun's workspace filter._
+
+### 2. Run Individual Applications
+
+| Application              | Command                   | Local URL                                                          |
+| :----------------------- | :------------------------ | :----------------------------------------------------------------- |
+| **Full Stack** (Both)    | `bun dev`                 | `http://localhost:3000` & `http://localhost:8787`                  |
+| **Web Frontend Only**    | `bun dev:web`             | [http://localhost:3000](http://localhost:3000)                     |
+| **Backend API Only**     | `bun dev:backend`         | [http://localhost:8787](http://localhost:8787)                     |
+| **API Interactive Docs** | (When backend is running) | [http://localhost:8787/reference](http://localhost:8787/reference) |
 
 ---
 
 ## Database Documentation
 
-For detailed instructions on Cloudflare D1 bindings, Drizzle ORM v1 configuration, schemas, client factory usage, and migrations, refer to the [Database Setup Guide](./database-setup.md).
-
----
-
-## Running the Application Locally
-
-To start the Hono backend local development server (runs via Cloudflare Wrangler) from the root:
-
-```bash
-bun dev:backend
-```
-
-Once started, the server runs at:
-
-- **API Server**: http://127.0.0.1:8787/
-
-You can verify it is running by visiting the root URL, which should respond with `Hello Hono!`.
-
+For detailed instructions on Cloudflare D1 bindings, Drizzle ORM v1 configuration, schemas, and running local/production migrations, refer to the [Database Setup Guide](./database-setup.md).
