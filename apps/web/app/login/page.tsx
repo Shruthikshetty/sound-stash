@@ -1,11 +1,12 @@
 "use client";
 
 import AppLogo from "@/components/app-logo";
+import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { appClient } from "@/lib/api-client";
 import { cn } from "@/lib/utils";
 import { CredentialResponse, GoogleLogin } from "@react-oauth/google";
-import { Headphones, Music2 } from "lucide-react";
+import { Headphones, Music2, Sparkle } from "lucide-react";
 
 function LoginScreen() {
   const notes = [
@@ -47,10 +48,13 @@ function LoginScreen() {
       <AppLogo />
       <div className="relative h-full w-full grid grid-cols-1 md:grid-cols-2 py-5">
         <div className="order-2 md:order-1 space-y-3 mt-5">
-          {/* @TODO add badge */}
-          <p>Your world, in rhythm</p>
+          <Badge variant={"secondary"} className="bg-accent/70 text-sm px-2">
+            <Sparkle size={15} color="hsl(7 100% 69%)" />
+            <p className="text-foreground">Your world, in rhythm</p>
+          </Badge>
           <h1 className="text-3xl text-foreground font-bold">
             Find the sound
+            <br />
             <span className="text-primary">of your somewhere.</span>
           </h1>
           <p className="text-muted-foreground">
