@@ -3,9 +3,24 @@
 import AppLogo from "@/components/app-logo";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { appClient } from "@/lib/api-client";
+import { cn } from "@/lib/utils";
 import { CredentialResponse, GoogleLogin } from "@react-oauth/google";
 
 function LoginScreen() {
+  const notes = [
+    {
+      title: "Your taste",
+      description: "No noise",
+    },
+    {
+      title: "Your library",
+      description: "All in one place",
+    },
+    {
+      title: "Your moment",
+      description: "Every day",
+    },
+  ];
   // function to handle the login @TODO this will be modified to use tanstack query
   const handleLogin = async (credentialResponse: CredentialResponse) => {
     await appClient.auth
@@ -34,9 +49,9 @@ function LoginScreen() {
         {/* login card */}
         <div className="w-full h-full flex justify-center align-middle">
           <Card className="max-w-[60%] min-w-100 z-1">
-            <CardHeader>
+            <CardHeader className="gap-2">
               <AppLogo showName={false} ghost />
-              <h1 className="text-primary text-base font-medium">
+              <h1 className="text-primary text-base font-medium ">
                 A better kind of listening
               </h1>
               <h2 className="text-2xl font-bold">Come on in.</h2>
@@ -45,7 +60,7 @@ function LoginScreen() {
                 are right where you left them.
               </p>
             </CardHeader>
-            <CardContent>
+            <CardContent className="flex flex-col gap-2 mt-4">
               <GoogleLogin
                 onSuccess={handleLogin}
                 onError={() => {
@@ -53,6 +68,29 @@ function LoginScreen() {
                   console.error("Login Failed");
                 }}
               />
+              <p className="text-center text-xs text-muted-foreground">
+                Continue to explore the Sonora listening experience.
+              </p>
+
+              {/* separator */}
+              <div className="border-b border-gray-600/70 mb-2 mt-5" />
+              {/* list of notes */}
+              <ul className="flex flex-row justify-between items-center">
+                {notes.map((item, i) => (
+                  <li
+                    className={cn(
+                      "flex flex-col items-center border-r border-gray-600/70 flex-1",
+                      i === 2 && "border-none",
+                    )}
+                    key={i}
+                  >
+                    <p className="text-sm text-foreground">{item.title}</p>
+                    <p className="text-xs text-muted-foreground">
+                      {item.description}
+                    </p>
+                  </li>
+                ))}
+              </ul>
             </CardContent>
           </Card>
         </div>
