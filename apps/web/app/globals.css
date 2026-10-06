@@ -51,9 +51,9 @@
 :root {
   --background: hsl(300 8% 5%);
   --foreground: hsl(330 20% 97%);
-  --card: hsl(300 7% 8%);
+  --card: hsl(300 7% 11%);
   --card-foreground: hsl(330 20% 97%);
-  --popover: hsl(300 7% 8%);
+  --popover: hsl(300 7% 11%);
   --popover-foreground: hsl(330 20% 97%);
   --primary: hsl(7 100% 69%);
   --primary-foreground: hsl(0 0% 10%);
@@ -86,9 +86,9 @@
 .dark {
   --background: hsl(300 8% 5%);
   --foreground: hsl(330 20% 97%);
-  --card: hsl(300 7% 8%);
+  --card: hsl(300 7% 11%);
   --card-foreground: hsl(330 20% 97%);
-  --popover: hsl(300 7% 8%);
+  --popover: hsl(300 7% 11%);
   --popover-foreground: hsl(330 20% 97%);
   --primary: hsl(7 100% 69%);
   --primary-foreground: hsl(0 0% 10%);
