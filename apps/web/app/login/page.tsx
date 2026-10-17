@@ -3,41 +3,43 @@
 import AppLogo from "@/components/app-logo";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
-import { appClient } from "@/lib/api-client";
 import { cn } from "@/lib/utils";
+import { useLoginMutation } from "@/services/auth";
 import { CredentialResponse, GoogleLogin } from "@react-oauth/google";
-import { Headphones, Music2, Sparkle } from "lucide-react";
+import { Headphones, Sparkle } from "lucide-react";
+import { useRouter } from "next/navigation";
 
+//ui notes to be shown
+const notes = [
+  {
+    title: "Your taste",
+    description: "No noise",
+  },
+  {
+    title: "Your library",
+    description: "All in one place",
+  },
+  {
+    title: "Your moment",
+    description: "Every day",
+  },
+];
+
+/**
+ * login screen component
+ */
 function LoginScreen() {
-  const notes = [
-    {
-      title: "Your taste",
-      description: "No noise",
-    },
-    {
-      title: "Your library",
-      description: "All in one place",
-    },
-    {
-      title: "Your moment",
-      description: "Every day",
-    },
-  ];
-  // function to handle the login @TODO this will be modified to use tanstack query
+  // @TODO use loading later
+  const { mutate } = useLoginMutation();
+  const router = useRouter();
+  // function to handle the login
   const handleLogin = async (credentialResponse: CredentialResponse) => {
-    await appClient.auth
-      .$post({
-        json: {
-          token: credentialResponse?.credential ?? "",
-        },
-      })
-      .then(async (response) => {
-        // will be used later
-        const _data = await response.json();
-      })
-      .catch((error) => {
-        console.log("error", error);
-      });
+    mutate(credentialResponse?.credential ?? "", {
+      onSuccess: () => {
+        // navigate to home page
+        router.push("/");
+      },
+    });
   };
 
   return (
