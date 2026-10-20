@@ -12,6 +12,7 @@ export interface AppBindings {
   };
   Variables: {
     logger: PinoLogger;
+    userId?: number;
   };
 }
 
