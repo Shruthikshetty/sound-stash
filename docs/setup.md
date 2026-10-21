@@ -33,6 +33,7 @@ The root [package.json](../package.json) manages all applications and packages u
 - Initialized inside `apps/backend/` using the Hono Cloudflare Workers template.
 - Integrated with `@hono/zod-openapi` for typed routes and automatic Swagger/Scalar documentation.
 - Database powered by Cloudflare D1 with Drizzle ORM v1 (see [Database Setup Guide](./database-setup.md)).
+- Object storage powered by Cloudflare R2 for music & images (see [Storage Setup Guide](./storage-setup.md)).
 - Runs locally via Wrangler on `http://localhost:8787`.
 
 ### 3. Next.js Web Frontend (`apps/web`)
