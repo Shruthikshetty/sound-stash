@@ -34,7 +34,8 @@ function LoginScreen() {
   const router = useRouter();
   // function to handle the login
   const handleLogin = async (credentialResponse: CredentialResponse) => {
-    mutate(credentialResponse?.credential ?? "", {
+    if (!credentialResponse?.credential) return;
+    mutate(credentialResponse?.credential, {
       onSuccess: () => {
         // navigate to home page
         router.push("/");

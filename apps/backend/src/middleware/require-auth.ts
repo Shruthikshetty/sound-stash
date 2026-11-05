@@ -1,3 +1,4 @@
+import { getCookie } from "hono/cookie";
 import { createMiddleware } from "hono/factory";
 import { INTERNAL_SERVER_ERROR, UNAUTHORIZED } from "shared/constants";
 
@@ -12,7 +13,7 @@ export const requireAuth = createMiddleware<AppBindings>(async (c, next) => {
   const authHeader = c.req.header("Authorization");
   const token = authHeader?.startsWith("Bearer ")
     ? authHeader.slice(7).trim()
-    : undefined;
+    : getCookie(c, "auth_token");
 
   // send response with unauthorize if no token is provided
   if (!token) {

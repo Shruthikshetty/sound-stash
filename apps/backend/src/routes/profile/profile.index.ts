@@ -7,7 +7,7 @@ import * as routes from "./profile.route.js";
 // aggregate all handlers and routes
 const router = createRouter();
 // apply middleware
-router.use("*", requireAuth);
+router.use("/profile", requireAuth);
 // apply openapi routes
 router.openapi(routes.getUserProfile, handlers.getUserProfile);
 
