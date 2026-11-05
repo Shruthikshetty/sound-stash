@@ -121,13 +121,13 @@ Follow these steps when you are ready to deploy your database and backend to Clo
 
 ### Step 1: Log in to Cloudflare
 ```bash
-bun --filter backend wrangler login
+cd apps/backend && bunx wrangler login
 ```
 
 ### Step 2: Create the Remote D1 Database
 Create the production database in your Cloudflare account:
 ```bash
-bun --filter backend wrangler d1 create sound-stash-db
+cd apps/backend && bunx wrangler d1 create sound-stash-db
 ```
 Wrangler will output your database configuration:
 ```jsonc
@@ -162,9 +162,9 @@ bun run db:migrate:prod
 ### Step 5: Upload Production Secrets
 Cloudflare Workers cannot read local `.dev.vars` in production. Add your production secrets securely:
 ```bash
-bun --filter backend wrangler secret put JWT_SECRET
-bun --filter backend wrangler secret put GOOGLE_CLIENT_ID
-bun --filter backend wrangler secret put GOOGLE_SECRET
+cd apps/backend && bunx wrangler secret put JWT_SECRET
+cd apps/backend && bunx wrangler secret put GOOGLE_CLIENT_ID
+cd apps/backend && bunx wrangler secret put GOOGLE_SECRET
 ```
 
 ### Step 6: Deploy the Backend Worker

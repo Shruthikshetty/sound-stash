@@ -2,6 +2,7 @@
 //https://hono.dev/docs/helpers/jwt#sign
 
 import type { Context } from "hono";
+import type { JWTPayload } from "hono/utils/jwt/types";
 
 import { setCookie } from "hono/cookie";
 import { sign, verify } from "hono/jwt";
@@ -9,6 +10,14 @@ import { sign, verify } from "hono/jwt";
 import type { UserType } from "@/db/schema";
 
 import { JWT_ALGORITHM, JWT_EXPIRY } from "@/constants/config.constants";
+
+//types
+export interface AuthJwtPayload extends JWTPayload {
+  sub: number | string; // user.id
+  email: string;
+  role: UserType["role"];
+  exp: number;
+}
 
 export async function genJwtToken(
   user: Pick<UserType, "id" | "email" | "role">,
@@ -27,7 +36,7 @@ export async function genJwtToken(
 }
 
 export async function verifyToken(token: string, secret: string) {
-  return await verify(token, secret, JWT_ALGORITHM);
+  return (await verify(token, secret, JWT_ALGORITHM)) as AuthJwtPayload;
 }
 
 //set cookies with the populated jwt
