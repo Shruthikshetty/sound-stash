@@ -54,8 +54,32 @@ bun run cf-typegen:backend
 Inside any Hono route, access the bucket via `c.env.STORAGE`:
 
 ### Upload File (`PUT`)
+
+> [!NOTE]
+> **Stream Length Requirement:** Cloudflare R2 requires a known content length when uploading a `ReadableStream`. If a stream has an unknown or chunked length, `put()` will throw an error. Either buffer the file into memory or use `FixedLengthStream`.
+
+#### Option A: Buffer into Memory (`ArrayBuffer`)
+Ideal for images, metadata, and smaller audio files:
 ```typescript
-await c.env.STORAGE.put(`music/${filename}`, fileStreamOrBuffer, {
+const buffer = await c.req.raw.arrayBuffer();
+
+await c.env.STORAGE.put(`music/${filename}`, buffer, {
+  httpMetadata: {
+    contentType: "audio/mpeg",
+  },
+});
+```
+
+#### Option B: Stream with Known Length (`FixedLengthStream`)
+Recommended for large audio files to avoid Worker memory limits:
+```typescript
+const contentLength = Number(c.req.header("content-length"));
+
+// R2 requires a known length for streams; FixedLengthStream enforces this
+const { readable, writable } = new FixedLengthStream(contentLength);
+c.req.raw.body?.pipeTo(writable);
+
+await c.env.STORAGE.put(`music/${filename}`, readable, {
   httpMetadata: {
     contentType: "audio/mpeg",
   },
@@ -92,11 +116,11 @@ await c.env.STORAGE.delete(`music/${filename}`);
 ### Production Deployment:
 1. Log in to Cloudflare (if not logged in):
    ```bash
-   bun --filter backend wrangler login
+   cd apps/backend && bunx wrangler login
    ```
 2. Create the production R2 bucket in Cloudflare:
    ```bash
-   bun --filter backend wrangler r2 bucket create sound-stash-storage
+   cd apps/backend && bunx wrangler r2 bucket create sound-stash-storage
    ```
 3. Deploy your backend:
    ```bash

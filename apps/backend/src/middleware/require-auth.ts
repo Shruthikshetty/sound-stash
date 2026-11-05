@@ -1,6 +1,6 @@
 import { getCookie } from "hono/cookie";
 import { createMiddleware } from "hono/factory";
-import { INTERNAL_SERVER_ERROR, UNAUTHORIZED } from "shared/constants";
+import { UNAUTHORIZED } from "shared/constants";
 
 import type { AppBindings } from "@/types";
 
@@ -47,10 +47,10 @@ export const requireAuth = createMiddleware<AppBindings>(async (c, next) => {
   } catch {
     return c.json(
       {
-        message: "something went wrong while authorization",
+        message: "invalid or expired token",
         success: false,
       },
-      INTERNAL_SERVER_ERROR,
+      UNAUTHORIZED,
     );
   }
 });
